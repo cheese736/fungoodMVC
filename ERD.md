@@ -2,29 +2,51 @@
 
 erDiagram
     user |o--o{ order : send
-    order }o --|{ fooditem : contain
+    order }o -- || fooditem : has
+    order }o -- o| table : in
+    fooditem }o--||category : has
+
+
+user {
+  int id
+  string username
+  string password_hash
+  int rewards
+  date inserted
+  date last_updated
+}
 
 order {
   int id
   int order_number
+  int table_number
   int food_item_id
   int user_id
-  date created_at
+  enum spiciness
+  date inserted
+  date last_updated
 }
 
 fooditem {
   int id PK
   string name
   int price
-  enum catagory
+  int catagory
   string image_src
-  CustomizeOption option
-  date created_at
-  int creator_id
-  date updated_at
-  int updator_id
+  bool has_spiciness
+  date inserted
+  date last_updated
 }
 
+table {
+  int id
+  enum status
+}
+
+category {
+  int id
+  string name
+}
 
 
 :::

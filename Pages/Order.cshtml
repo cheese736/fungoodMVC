@@ -1,0 +1,116 @@
+@page "/order"
+@model fungoodMVC.Pages.Order
+@{
+    ViewData["Title"] = "Order";
+}
+
+<h1>菜單<a href="#"" data-bs-toggle="modal" data-bs-target="#modal"" onclick="renderCart()"><i class="fa-solid fa-cart-shopping" style="color: #d19b3d;"></i></a></h1>
+
+<div class="container">
+    <div class="d-flex flex-column align-items-center">
+
+    @foreach (var category in @Model.Categories)
+    {
+        <div class="card mb-2" style="width:90%">
+            <div class="card-header">
+                @category.Name
+            </div>
+            <div class="card-body p-0">
+                @foreach (var item in @Model.FoodItems)
+                {
+                    @if (@item.CategoryId == @category.Id)
+                    {
+                        <div class="container">
+                            <div class="row">
+                                <div class="col">
+                                    <p>@item.Name</p>
+                                    <p class="text-center">@(item.Price)$</p>
+                                </div>
+                                <div class="col p-2">
+                                    <img src=@item.ImageSrc class="rounded"alt="暫無圖片" width="100" asp-append-version="true">
+                                </div>
+                                <div class="col d-flex justify-content-end align-items-center">
+                                    <div><button class="btn btn-lg"><i class="fa-solid fa-cart-plus" style="color: #c28419;" onclick="addToCart(this)" data-id="@(item.Id)" data-price="@item.Price" data-name="@item.Name"></i></button></div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+    }
+    </div>
+</div>
+<!-- Shopping cart -->
+<div class="modal" tabindex="-1" role="dialog" id="modal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">購物車</h5>
+      </div>
+      <div class="modal-body">
+        <table>
+            <thead>
+                <tr>
+                    <th>品名</th>
+                    <th>數量</th>
+                    <th>單價</th>
+                </tr>
+            </thead>
+            <tbody id="shopping-cart">
+
+            </tbody>
+        </table>
+      </div>
+      <p id="total"></p>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary">Submit</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+    function addToCart(btn) {
+        const cart = JSON.parse(localStorage.getItem("cart")) || []
+        const foodId = Number(btn.dataset.id)
+        const price = Number(btn.dataset.price)
+        const name = btn.dataset.name
+        if (!cart.some(e => e.foodId === foodId)) {
+            cart.push({
+                "foodId": foodId,
+                "name": name,
+                "quantity": 1,
+                "price": price
+            })
+        } else {
+            cart.forEach(e => {
+                if (e.foodId === foodId) {
+                    e.quantity ++
+                }
+            })
+        }
+        const cartJSON = JSON.stringify(cart)
+        localStorage.setItem("cart",cartJSON)
+    }
+    function renderCart() {
+        const modal = document.querySelector('#shopping-cart')
+        const totalPrice = document.querySelector('#total')
+        const data = JSON.parse(localStorage.getItem('cart'))
+        let total = 0
+        let temp = ""
+        data.forEach(item => {
+            temp += `
+            <tr>
+                <td>${item.name}</td>
+                <td>${item.quantity}</td>
+                <td>${item.price}</td>
+            </tr>
+            `
+            total += item.price * item.quantity
+        })
+        modal.innerHTML = temp
+        totalPrice.innerHTML = `總共:${total}`
+    }
+</script>
