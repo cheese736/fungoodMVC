@@ -4,7 +4,14 @@
     ViewData["Title"] = "Order";
 }
 
-<h1>菜單<a href="#"" data-bs-toggle="modal" data-bs-target="#modal"" onclick="renderCart()"><i class="fa-solid fa-cart-shopping" style="color: #d19b3d;"></i></a></h1>
+<h1>
+    菜單
+    <a href="#"" class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#modal"" onclick="renderCart()">
+        <i class="fa-solid fa-cart-shopping position-relative " style="color: #d19b3d;" >
+            <span class="badge rounded-pill  translate-middle" id="cart-qty"></span>
+        </i>
+    </a>
+</h1>
 
 <div class="container">
     <div class="d-flex flex-column align-items-center">
@@ -41,8 +48,8 @@
     }
     </div>
 </div>
-<!-- Shopping cart -->
-<div class="modal" tabindex="-1" role="dialog" id="modal">
+<partial name="Shared/_CartPartial.cshtml"></partial>
+@* <div class="modal" tabindex="-1" role="dialog" id="modal">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -69,48 +76,9 @@
       </div>
     </div>
   </div>
-</div>
+</div> *@
 
+<script src="~/js/cartOperation.js" asp-append-version="true"></script>
 <script>
-    function addToCart(btn) {
-        const cart = JSON.parse(localStorage.getItem("cart")) || []
-        const foodId = Number(btn.dataset.id)
-        const price = Number(btn.dataset.price)
-        const name = btn.dataset.name
-        if (!cart.some(e => e.foodId === foodId)) {
-            cart.push({
-                "foodId": foodId,
-                "name": name,
-                "quantity": 1,
-                "price": price
-            })
-        } else {
-            cart.forEach(e => {
-                if (e.foodId === foodId) {
-                    e.quantity ++
-                }
-            })
-        }
-        const cartJSON = JSON.stringify(cart)
-        localStorage.setItem("cart",cartJSON)
-    }
-    function renderCart() {
-        const modal = document.querySelector('#shopping-cart')
-        const totalPrice = document.querySelector('#total')
-        const data = JSON.parse(localStorage.getItem('cart'))
-        let total = 0
-        let temp = ""
-        data.forEach(item => {
-            temp += `
-            <tr>
-                <td>${item.name}</td>
-                <td>${item.quantity}</td>
-                <td>${item.price}</td>
-            </tr>
-            `
-            total += item.price * item.quantity
-        })
-        modal.innerHTML = temp
-        totalPrice.innerHTML = `總共:${total}`
-    }
+    updateCartQty(cart)
 </script>

@@ -13,7 +13,9 @@ namespace fungoodMVC.Pages
 	{
 		private readonly ILogger<Order> _logger;
 		private readonly DataContext _context;
+		[BindProperty]
 		public List<FoodItem> FoodItems { get; set; } = new List<FoodItem>();
+		[BindProperty]
 		public List<Category> Categories { get; set; } = new List<Category>();
 		public List<FoodItem> Cart { get; set; } = new List<FoodItem>();
 
@@ -23,15 +25,16 @@ namespace fungoodMVC.Pages
 			_context = context;
 		}
 
-		public void OnGet()
+		public async Task<IActionResult> OnGet()
 		{
-			FoodItems = _context.food_items.ToList();
-			Categories = _context.categories.ToList();
+			FoodItems = await _context.food_items.ToListAsync();
+			Categories = await _context.categories.ToListAsync();
+			return Page();
 		}
 
-		public void AddToCart()
+		public async Task<IActionResult> OnPost()
 		{
-
+			return Page();
 		}
 	}
 }
