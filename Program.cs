@@ -6,14 +6,32 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddSession();
-builder.Services.AddControllersWithViews();
+// for domain logic
 builder.Services.AddDbContext<DataContext>(options =>
 {
 	options.UseSqlServer(builder.Configuration.GetConnectionString("AzureDbConnection"));
 });
+// for authentication and authorization
+builder.Services.AddDbContext<IdentityDbContext>(option =>
+{
+	option.UseSqlServer(builder.Configuration.GetConnectionString("AzureDbConnection"));
+});
+builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false).AddEntityFrameworkStores<IdentityDbContext>();
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<IdentityDbContext>();
 builder.Services.AddRazorPages();
+
+builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+
+builder.Services.Configure<IdentityOptions>(options =>
+{
+	options.Password.RequiredLength = 4;
+	options.Password.RequireDigit = false;
+	options.Password.RequiredUniqueChars = 0;
+	options.Password.RequireLowercase = false;
+	options.Password.RequireUppercase = false;
+	options.Password.RequireNonAlphanumeric = false;
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -29,10 +47,8 @@ app.UseStaticFiles();
 
 app.UseRouting();
 app.UseSession();
+app.UseAuthentication();
 app.UseAuthorization();
 app.MapRazorPages();
-// app.MapControllerRoute(
-//   name: "default",
-//   pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
