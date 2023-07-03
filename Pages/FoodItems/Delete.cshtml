@@ -1,0 +1,73 @@
+@page
+@model fungoodMVC.Pages_FoodItems.DeleteModel
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Delete</title>
+</head>
+<body>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>FoodItem</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.FoodItem.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.FoodItem.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.FoodItem.Price)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.FoodItem.Price)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.FoodItem.category)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.FoodItem.category.Id)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.FoodItem.ImageSrc)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.FoodItem.ImageSrc)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.FoodItem.HasSpiciness)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.FoodItem.HasSpiciness)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.FoodItem.Inserted)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.FoodItem.Inserted)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.FoodItem.LastUpdated)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.FoodItem.LastUpdated)
+        </dd>
+    </dl>
+    
+    <form method="post">
+        <input type="hidden" asp-for="FoodItem.Id" />
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <a asp-page="./Index">Back to List</a>
+    </form>
+</div>
+</body>
+</html>
