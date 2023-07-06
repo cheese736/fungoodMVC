@@ -1,17 +1,17 @@
 <!-- Shopping cart -->
-<div class="modal" tabindex="-1" role="dialog" id="modal">
+<div class="modal" tabindex="-1" role="dialog" id="modal" style="top: 20vh;">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">購物車</h5>
+        <h5 class="modal-title">已點項目</h5>
       </div>
       <div class="modal-body">
-        <table>
+        <table class="m-auto w-75">
             <thead>
                 <tr>
                     <th>品名</th>
-                    <th>數量</th>
-                    <th>單價</th>
+                    <th class="text-center">數量</th>
+                    <th class="text-center">單價</th>
                 </tr>
             </thead>
             <tbody id="shopping-cart">
@@ -19,10 +19,11 @@
             </tbody>
         </table>
       </div>
-      <p id="total"></p>
+      <p class="text-end me-3"id="total"></p>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary">Submit</button>
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary btn-sm">送出訂單</button>
+        <button type="button" class="btn btn-danger btn-sm" onclick="clearCart()">清空點單</button>
+        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">關閉</button>
       </div>
     </div>
   </div>

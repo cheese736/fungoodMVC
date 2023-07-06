@@ -7,38 +7,43 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using fungoodMVC.Data;
 using fungoodMVC.Models;
+using fungoodMVC.Pages.FoodItems;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Azure;
+using fungoodMVC.Authorization;
 
 namespace fungoodMVC.Pages_FoodItems
 {
-    public class CreateModel : PageModel
+    public class CreateModel : DI_BasePageModel
     {
-        private readonly fungoodMVC.Data.DataContext _context;
 
-        public CreateModel(fungoodMVC.Data.DataContext context)
+        public CreateModel(DataContext context, IAuthorizationService authorizationService, UserManager<IdentityUser> userManager)
+         : base(context, authorizationService, userManager)
         {
-            _context = context;
+
         }
 
         public IActionResult OnGet()
         {
-        ViewData["CategoryId"] = new SelectList(_context.categories, "Id", "Id");
+            ViewData["CategoryId"] = new SelectList(Context.categories, "Id", "Name");
             return Page();
         }
 
         [BindProperty]
         public FoodItem FoodItem { get; set; } = default!;
-        
+
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
         {
-          if (!ModelState.IsValid || _context.food_items == null || FoodItem == null)
+            if (!ModelState.IsValid || Context.food_items == null || FoodItem == null)
             {
                 return Page();
             }
 
-            _context.food_items.Add(FoodItem);
-            await _context.SaveChangesAsync();
+            Context.food_items.Add(FoodItem);
+            await Context.SaveChangesAsync();
 
             return RedirectToPage("./Index");
         }

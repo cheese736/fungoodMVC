@@ -7,35 +7,40 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using fungoodMVC.Data;
 using fungoodMVC.Models;
+using fungoodMVC.Pages.FoodItems;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace fungoodMVC.Pages_FoodItems
 {
-    public class DeleteModel : PageModel
+    [Authorize(Roles = "staff")]
+    public class DeleteModel : DI_BasePageModel
     {
-        private readonly fungoodMVC.Data.DataContext _context;
-
-        public DeleteModel(fungoodMVC.Data.DataContext context)
+        public DeleteModel(DataContext context, IAuthorizationService authorizationService, UserManager<IdentityUser> userManager)
+         : base(context, authorizationService, userManager)
         {
-            _context = context;
+
         }
 
         [BindProperty]
-      public FoodItem FoodItem { get; set; } = default!;
+        public FoodItem FoodItem { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
-            if (id == null || _context.food_items == null)
+            if (id == null || Context.food_items == null)
             {
                 return NotFound();
             }
 
-            var fooditem = await _context.food_items.FirstOrDefaultAsync(m => m.Id == id);
+            var fooditem = await Context.food_items
+            .Include(f => f.category)
+            .FirstOrDefaultAsync(m => m.Id == id);
 
             if (fooditem == null)
             {
                 return NotFound();
             }
-            else 
+            else
             {
                 FoodItem = fooditem;
             }
@@ -44,17 +49,17 @@ namespace fungoodMVC.Pages_FoodItems
 
         public async Task<IActionResult> OnPostAsync(int? id)
         {
-            if (id == null || _context.food_items == null)
+            if (id == null || Context.food_items == null)
             {
                 return NotFound();
             }
-            var fooditem = await _context.food_items.FindAsync(id);
+            var fooditem = await Context.food_items.FindAsync(id);
 
             if (fooditem != null)
             {
                 FoodItem = fooditem;
-                _context.food_items.Remove(FoodItem);
-                await _context.SaveChangesAsync();
+                Context.food_items.Remove(FoodItem);
+                await Context.SaveChangesAsync();
             }
 
             return RedirectToPage("./Index");

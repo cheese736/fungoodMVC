@@ -41,12 +41,17 @@ function renderCart() {
 		temp += `
 		<tr>
 			<td>${item.name}</td>
-			<td>${item.quantity}</td>
-			<td>${item.price}</td>
+			<td class="text-center">${item.quantity}</td>
+			<td class="text-center">${item.price}</td>
 		</tr>
 		`
 		total += item.price * item.quantity
 	})
 	modal.innerHTML = temp
 	totalPrice.innerHTML = `總共:${total}`
+}
+
+function clearCart() {
+	localStorage.removeItem("cart")
+	location.reload()
 }

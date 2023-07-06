@@ -14,5 +14,6 @@ namespace fungoodMVC.Authorization
 	public class Constants
 	{
 		public static readonly string CreateOperationName = "create";
+		public static readonly string StaffRole = "staff";
 	}
 }

@@ -8,9 +8,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using fungoodMVC.Data;
 using fungoodMVC.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace fungoodMVC.Pages_FoodItems
 {
+    [Authorize(Roles = "staff")]
     public class EditModel : PageModel
     {
         private readonly fungoodMVC.Data.DataContext _context;
@@ -30,13 +32,13 @@ namespace fungoodMVC.Pages_FoodItems
                 return NotFound();
             }
 
-            var fooditem =  await _context.food_items.FirstOrDefaultAsync(m => m.Id == id);
+            var fooditem = await _context.food_items.FirstOrDefaultAsync(m => m.Id == id);
             if (fooditem == null)
             {
                 return NotFound();
             }
             FoodItem = fooditem;
-           ViewData["CategoryId"] = new SelectList(_context.categories, "Id", "Id");
+            ViewData["CategoryId"] = new SelectList(_context.categories, "Id", "Name");
             return Page();
         }
 
@@ -72,7 +74,7 @@ namespace fungoodMVC.Pages_FoodItems
 
         private bool FoodItemExists(int id)
         {
-          return (_context.food_items?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.food_items?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

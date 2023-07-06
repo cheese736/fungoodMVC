@@ -7,9 +7,12 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using fungoodMVC.Data;
 using fungoodMVC.Models;
+using fungoodMVC.Authorization;
+using Microsoft.AspNetCore.Authorization;
 
 namespace fungoodMVC.Pages_FoodItems
 {
+    [Authorize(Roles = "staff")]
     public class IndexModel : PageModel
     {
         private readonly fungoodMVC.Data.DataContext _context;
@@ -19,7 +22,7 @@ namespace fungoodMVC.Pages_FoodItems
             _context = context;
         }
 
-        public IList<FoodItem> FoodItem { get;set; } = default!;
+        public IList<FoodItem> FoodItem { get; set; } = default!;
 
         public async Task OnGetAsync()
         {
