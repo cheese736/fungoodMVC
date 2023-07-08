@@ -3,9 +3,22 @@
 
 
 <body>
-<p>
-    <a asp-page="Create">Create New</a>
-</p>
+<div>
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a class="nav-link" href="#">訂單管理</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" aria-current="page" asp-page="/FoodItems/Index">品項管理</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">餐桌狀態</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link disabled">Disabled</a>
+        </li>
+    </ul>
+</div>
 <table class="table" style="font-size:10px;">
     <thead>
         <tr>
