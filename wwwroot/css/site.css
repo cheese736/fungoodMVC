@@ -86,3 +86,12 @@ body {
 .resto-info li {
   padding-left: 0px;
 }
+
+/* Important part */
+.modal-dialog{
+  overflow-y: initial !important
+}
+.modal-body{
+  height: 30vh;
+  overflow-y: auto;
+}
