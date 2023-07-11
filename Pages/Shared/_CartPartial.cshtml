@@ -10,8 +10,8 @@
             <thead>
                 <tr>
                     <th>品名</th>
-                    <th class="text-center">數量</th>
                     <th class="text-center">單價</th>
+                    <th class="text-center">辣度</th>
                 </tr>
             </thead>
             <tbody id="shopping-cart">
@@ -21,9 +21,11 @@
       </div>
       <p class="text-end me-3"id="total"></p>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary btn-sm">送出訂單</button>
-        <button type="button" class="btn btn-danger btn-sm" onclick="clearCart()">清空點單</button>
-        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">關閉</button>
+        <form action="POST">
+          <button type="button" class="btn btn-primary btn-sm" onclick="sendOrder()">送出訂單</button>
+          <button type="button" class="btn btn-danger btn-sm" onclick="clearCart()">清空點單</button>
+          <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">關閉</button>
+        </form>
       </div>
     </div>
   </div>

@@ -1,57 +1,108 @@
 const cart = JSON.parse(localStorage.getItem("cart")) ?? []
-function updateCartQty(cart) {
+const modal = document.querySelector('#shopping-cart')
+const totalPrice = document.querySelector('#total')
+
+
+if (!modal.innerHTML.trim() && localStorage.getItem('cartHtml')){
+	modal.innerHTML = localStorage.getItem('cartHtml')
+	totalPrice.innerHTML = `總共: ${totalCaculator()}元`
+}
+
+function updateCartQty() {
 	const cartQtyPill = document.querySelector('#cart-qty')
 	let cartQty = 0
 	cart.forEach(e => {
-		cartQty += e.quantity
+		cartQty ++
 	})
 	cartQtyPill.innerHTML = cartQty
 }
 
+
 function addToCart(btn) {
 	const foodId = Number(btn.dataset.id)
 	const price = Number(btn.dataset.price)
+	const spicy = (btn.dataset.spicy === "True") ? true : false
 	const name = btn.dataset.name
-	if (!cart.some(e => e.foodId === foodId)) {
-		cart.push({
-			"foodId": foodId,
-			"name": name,
-			"quantity": 1,
-			"price": price
-		})
-	} else {
-		cart.forEach(e => {
-			if (e.foodId === foodId) {
-				e.quantity ++
-			}
-		})
+	const newItem = {
+		"Id": cart.length + 1,
+		"FoodId": foodId,
+		"Name": name,
+		"Price": price,
+		"HasSpiciness": spicy
 	}
-	updateCartQty(cart)
-	const cartJSON = JSON.stringify(cart)
-	localStorage.setItem("cart",cartJSON)
-}
 
-function renderCart() {
-	const modal = document.querySelector('#shopping-cart')
-	const totalPrice = document.querySelector('#total')
-	const data = JSON.parse(localStorage.getItem('cart'))
-	let total = 0
-	let temp = ""
-	data.forEach(item => {
+	cart.push(newItem)
+	updateCartQty()
+	
+	// add new line to the modal
+	let temp = '' 
+	temp += `
+	<tr data-item-id=${newItem.Id}>
+		<td>${newItem.Name}</td>
+		<td class="text-center">${newItem.Price}</td>
+	`
+	if (newItem.HasSpiciness) {
 		temp += `
-		<tr>
-			<td>${item.name}</td>
-			<td class="text-center">${item.quantity}</td>
-			<td class="text-center">${item.price}</td>
-		</tr>
+		<td class="p-2 ">
+			<select class="form-select form-select-sm w-75 mx-auto" onchange="specifySpiciness(this)" data-item-id=${newItem.Id}>
+			<option value=0>不辣</option>
+			<option value=1>小辣</option>
+			<option value=2>中辣</option>
+			<option value=3>大辣</option>
+			</select>
+		</td>
 		`
-		total += item.price * item.quantity
-	})
-	modal.innerHTML = temp
-	totalPrice.innerHTML = `總共:${total}`
+	}
+	temp += `
+	</tr>
+	`
+	modal.innerHTML += temp
+
+
+
+	totalPrice.innerHTML = `總共:${totalCaculator()}`
+	updateLocalStorage()
 }
 
 function clearCart() {
 	localStorage.removeItem("cart")
+	localStorage.removeItem("cartHtml")
 	location.reload()
+}
+
+function specifySpiciness(option) {
+	cart.forEach(i => {
+		if (i.Id == Number(option.dataset.itemId)) {
+			i.Spiciness = Number(option.value)
+		}
+	})
+	updateLocalStorage()
+}
+
+function updateLocalStorage() {
+	const cartJSON = JSON.stringify(cart)
+	const cartHtml = modal.innerHTML
+	localStorage.setItem("cart",cartJSON)
+	localStorage.setItem("cartHtml",cartHtml)
+}
+
+async function sendOrder() {
+	if (cart.length === 0) 
+		return
+	const url = window.location.href
+	const token = document.querySelector('input[name="__RequestVerificationToken"]').getAttribute("value")
+	const res = await fetch(url,{
+		method : "POST",
+		headers: {
+			"RequestVerificationToken": token,
+			"Content-Type": "application/json",
+		},
+		body: JSON.stringify(cart)
+	})
+}
+
+function totalCaculator() {
+	return cart.reduce((acc, current) => {
+		return acc + current.Price
+	},0)
 }

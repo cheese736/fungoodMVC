@@ -6,7 +6,7 @@
 
 <h1>
     菜單
-    <a href="#"" class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#modal"" onclick="renderCart()">
+    <a href="#modal"" class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#modal"">
         <i class="fa-solid fa-cart-shopping position-relative " style="color: #d19b3d;" >
             <span class="badge rounded-pill  translate-middle" id="cart-qty"></span>
         </i>
@@ -37,7 +37,15 @@
                                     <img src=@item.ImageSrc class="rounded"alt="暫無圖片" width="100" asp-append-version="true">
                                 </div>
                                 <div class="col d-flex justify-content-end align-items-center">
-                                    <div><button class="btn btn-lg"><i class="fa-solid fa-cart-plus" style="color: #c28419;" onclick="addToCart(this)" data-id="@(item.Id)" data-price="@item.Price" data-name="@item.Name"></i></button></div>
+                                    <div>
+                                        <button class="btn btn-lg" onclick="addToCart(this)"
+                                        data-id="@(item.Id)" 
+                                        data-price="@item.Price" 
+                                        data-name="@item.Name"
+                                        data-spicy="@item.HasSpiciness">
+                                            <i class="fa-solid fa-cart-plus fs-2" style="color: #c28419;"></i>
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -80,5 +88,5 @@
 
 <script src="~/js/cartOperation.js" asp-append-version="true"></script>
 <script>
-    updateCartQty(cart)
+    updateCartQty()
 </script>
