@@ -58,8 +58,6 @@ function addToCart(btn) {
 	`
 	modal.innerHTML += temp
 
-
-
 	totalPrice.innerHTML = `總共:${totalCaculator()}`
 	updateLocalStorage()
 }

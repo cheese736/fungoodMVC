@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using fungoodMVC.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -12,17 +14,21 @@ namespace fungoodMVC.Pages
 {
 	public class Order : PageModel
 	{
-		private readonly ILogger<Order> _logger;
 		private readonly DataContext _context;
-		[BindProperty]
-		public List<FoodItem> FoodItems { get; set; } = new List<FoodItem>();
-		[BindProperty]
-		public List<Category> Categories { get; set; } = new List<Category>();
-		public List<FoodItem> Cart { get; set; } = new List<FoodItem>();
 
-		public Order(ILogger<Order> logger, DataContext context)
+		public List<FoodItem> FoodItems { get; set; } = new List<FoodItem>();
+		public List<Category> Categories { get; set; } = new List<Category>();
+
+		public class OrderDto
 		{
-			_logger = logger;
+			public int FoodId { get; set; }
+			public string Name { get; set; } = string.Empty;
+			public Spiciness? Spiciness { get; set; }
+			public int Price { get; set; }
+		}
+
+		public Order(DataContext context)
+		{
 			_context = context;
 		}
 
@@ -31,6 +37,17 @@ namespace fungoodMVC.Pages
 			FoodItems = await _context.food_items.ToListAsync();
 			Categories = await _context.categories.ToListAsync();
 			return Page();
+		}
+		public void OnPost([FromBody] List<OrderDto> data)
+		{
+			if (ModelState.IsValid)
+			{
+				System.Console.WriteLine("reading request body...");
+			}
+			foreach (var item in data)
+			{
+				System.Console.WriteLine(item.Spiciness);
+			}
 		}
 
 	}
