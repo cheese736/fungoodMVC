@@ -10,7 +10,7 @@ using fungoodMVC.Models;
 using fungoodMVC.Authorization;
 using Microsoft.AspNetCore.Authorization;
 
-namespace fungoodMVC.Pages_FoodItems
+namespace fungoodMVC.Pages.FoodItems
 {
     [Authorize(Roles = "staff")]
     public class IndexModel : PageModel

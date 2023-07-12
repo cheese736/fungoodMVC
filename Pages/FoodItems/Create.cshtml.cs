@@ -13,8 +13,9 @@ using Microsoft.AspNetCore.Identity;
 using Azure;
 using fungoodMVC.Authorization;
 
-namespace fungoodMVC.Pages_FoodItems
+namespace fungoodMVC.Pages.FoodItems
 {
+    [Authorize(Roles = "staff")]
     public class CreateModel : DI_BasePageModel
     {
 

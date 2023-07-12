@@ -11,7 +11,7 @@ using fungoodMVC.Pages.FoodItems;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 
-namespace fungoodMVC.Pages_FoodItems
+namespace fungoodMVC.Pages.FoodItems
 {
     [Authorize(Roles = "staff")]
     public class DeleteModel : DI_BasePageModel
