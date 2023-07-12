@@ -18,6 +18,8 @@ namespace fungoodMVC.Pages
 
 		public List<FoodItem> FoodItems { get; set; } = new List<FoodItem>();
 		public List<Category> Categories { get; set; } = new List<Category>();
+		public List<Table> Tables { get; set; } = new List<Table>();
+
 
 		public class OrderDto
 		{
@@ -36,6 +38,7 @@ namespace fungoodMVC.Pages
 		{
 			FoodItems = await _context.food_items.ToListAsync();
 			Categories = await _context.categories.ToListAsync();
+			Tables = await _context.tables.ToListAsync();
 			return Page();
 		}
 		public void OnPost([FromBody] List<OrderDto> data)

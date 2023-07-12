@@ -49,13 +49,22 @@ namespace fungoodMVC.Data
 			  new Category { Id = 4, Name = "小菜" },
 			  new Category { Id = 5, Name = "湯" }
 			);
+
+			builder.Entity<Table>()
+			.HasData(
+			  new Table { Id = 1 },
+			  new Table { Id = 2 },
+			  new Table { Id = 3 },
+			  new Table { Id = 4 },
+			  new Table { Id = 5 }
+			);
 		}
 
 		public DbSet<FoodItem> food_items => Set<FoodItem>();
 		public DbSet<Order> orders => Set<Order>();
 		public DbSet<Category> categories => Set<Category>();
 		public DbSet<User> users => Set<User>();
-		public DbSet<Table> table => Set<Table>();
+		public DbSet<Table> tables => Set<Table>();
 
 	}
 }
