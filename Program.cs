@@ -1,5 +1,6 @@
 global using Microsoft.EntityFrameworkCore;
 global using fungoodMVC.Data;
+global using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,6 +20,8 @@ builder.Services.AddDbContext<IdentityDbContext>(option =>
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
 .AddRoles<IdentityRole>()
 .AddEntityFrameworkStores<IdentityDbContext>();
+
+builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
 builder.Services.AddRazorPages();
 
