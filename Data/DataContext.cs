@@ -25,12 +25,22 @@ namespace fungoodMVC.Data
 			.ValueGeneratedOnAddOrUpdate();
 
 			builder.Entity<Order>()
+			.Property(e => e.Inserted)
+			.HasDefaultValueSql("GETDATE()")
+			.ValueGeneratedOnAdd();
+
+			builder.Entity<Order>()
+			.Property(e => e.LastUpdated)
+			.HasDefaultValueSql("GETDATE()")
+			.ValueGeneratedOnAddOrUpdate();
+
+			builder.Entity<Order>()
 			.Property(e => e.Spiciness)
 			.HasConversion<string>();
 
 			builder.Entity<Table>()
-	  .Property(e => e.Status)
-	  .HasConversion<string>();
+			.Property(e => e.Status)
+			.HasConversion<string>();
 
 			builder.Entity<FoodItem>()
 			.HasData(
