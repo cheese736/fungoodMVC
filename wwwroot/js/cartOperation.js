@@ -2,7 +2,6 @@ const cart = JSON.parse(localStorage.getItem("cart")) ?? []
 const modal = document.querySelector('#shopping-cart')
 const totalPrice = document.querySelector('#total')
 
-
 if (!modal.innerHTML.trim() && localStorage.getItem('cartHtml')){
 	modal.innerHTML = localStorage.getItem('cartHtml')
 	totalPrice.innerHTML = `總共: ${totalCaculator()}元`
@@ -25,10 +24,12 @@ function addToCart(btn) {
 	const name = btn.dataset.name
 	const newItem = {
 		"Id": cart.length + 1,
-		"FoodId": foodId,
+		"FoodItem": foodId,
+		"Table": null,
 		"Name": name,
 		"Price": price,
-		"HasSpiciness": spicy
+		"HasSpiciness": spicy,
+		"Spiciness": null
 	}
 
 	cart.push(newItem)
@@ -74,6 +75,13 @@ function specifySpiciness(option) {
 			i.Spiciness = Number(option.value)
 		}
 	})
+	for (let i=0; i < option.children.length; i++) {
+		if (option.children[i].value === option.value) {
+			option.children[i].setAttribute("selected","")
+		} else {
+			option.children[i].removeAttribute("selected")
+		}
+	}
 	updateLocalStorage()
 }
 
@@ -85,8 +93,21 @@ function updateLocalStorage() {
 }
 
 async function sendOrder() {
-	if (cart.length === 0) 
+	if (cart.length === 0) {
+		alert("還沒點餐唷")
 		return
+	} 
+	const tableSelector = document.querySelector('#table-selector')
+	if (!tableSelector.value) {
+		alert("請選擇桌號")
+		return
+	}
+	cart.forEach(i => {
+		i.Table = Number(tableSelector.value)
+		if (i.HasSpiciness && !i.Spiciness) {
+			i.Spiciness = 0
+		}
+	})
 	const url = window.location.href
 	const token = document.querySelector('input[name="__RequestVerificationToken"]').getAttribute("value")
 	const res = await fetch(url,{
