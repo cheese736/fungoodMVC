@@ -10,11 +10,10 @@ namespace fungoodMVC.Models
 	{
 		public int Id { get; set; }
 		public int OrderNumber { get; set; }
+		public FoodItem FoodItem { get; set; } = new FoodItem();
 		public Table? Table { get; set; }
-		public int FoodItemId { get; set; }
-		public int? UserId { get; set; }
-
 		public Spiciness? Spiciness { get; set; }
+		public string? UserId { get; set; }
 	}
 
 	public enum Spiciness

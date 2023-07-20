@@ -9,11 +9,12 @@ namespace fungoodMVC.Models
 	{
 		public int Id { get; set; }
 		public Status? Status { get; set; }
+		public int? OrderNumer { get; set; }
 	}
 
 	public enum Status
 	{
-		Availiable,
+		Available,
 		Occupied,
 		Reserved,
 		OutOfService

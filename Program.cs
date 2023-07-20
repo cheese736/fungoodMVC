@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddHttpContextAccessor();
+
 // Add services to the container.
 builder.Services.AddSession();
 // for domain logic
@@ -23,7 +25,6 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
 
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
-builder.Services.AddRazorPages();
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 

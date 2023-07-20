@@ -1,0 +1,54 @@
+@page 
+@model fungoodMVC.Areas.Backstage.Pages.Tables.Index
+@using fungoodMVC.Models
+@{ string url = Model.Request.GetDisplayUrl();}
+
+<partial name="/Areas/Backstage/Shared/_BackstageTabPartial.cshtml" model="url">
+
+<h1>餐桌狀態</h1>
+<div class="container">
+    <div class="row row-cols-2">
+    @foreach (var table in @Model.Tables) 
+    {
+        <div class="col pb-2 dropdown-center">
+            <div class="p-0 position-relative" data-bs-toggle="dropdown">
+                <img src="~/images/dinningTable.png" alt="" asp-append-version="true"
+                class="img-fluid img-thumbnail " style="background-color: @JudgeStatus(table);"
+                >
+                <p class="position-absolute top-0 start-0 ">@table.Id</p>
+                <p class="position-absolute bottom-0 start-50 translate-middle fw-bold my-auto">
+                    <span>@(table.Status)</span>
+                    <br>
+                    @if (table.Status == Status.Occupied)
+                    {
+                    <span style="color: maroon;">訂單編號: @(table.OrderNumer)</span> 
+                    }
+                </p>
+            </div>
+            @if (table.Status == Status.Occupied)
+            {
+            <ul class="dropdown-menu " aria-labelledby="dropdownLink">
+                <a class="dropdown-item" 
+                href="Tables/@table.OrderNumer/Details" >
+                查看詳情
+                </a>
+            </ul>
+            }
+        </div>
+    }
+    </div>
+    
+</div>
+
+@{
+    string JudgeStatus(Table table)
+    {
+        switch (table.Status)
+        {
+            case Status.Occupied:
+                return "MediumAquaMarine";
+            default:
+                return "";
+        };
+    }
+}

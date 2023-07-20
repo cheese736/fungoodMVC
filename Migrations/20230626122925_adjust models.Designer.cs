@@ -13,7 +13,7 @@ namespace fungoodMVC.Migrations
 {
     [DbContext(typeof(DataContext))]
     [Migration("20230626122925_adjust models")]
-    partial class adjustmodels
+    partial class Adjustmodels
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

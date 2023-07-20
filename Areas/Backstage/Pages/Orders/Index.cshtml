@@ -1,0 +1,41 @@
+@page
+@model fungoodMVC.Areas.Backstage.Pages.Orders.Index
+@using fungoodMVC.Models
+@{ string url = Model.Request.GetDisplayUrl();}
+<partial name="/Areas/Backstage/Shared/_BackstageTabPartial.cshtml" model="url">
+
+<div>
+    <table class="table" style="font-size:10px;">
+    <thead>
+        <tr>
+            <th>
+                單號
+            </th>
+            <th>
+                建立時間
+            </th>
+            <th>
+                桌號
+            </th>
+            <th>
+                金額
+            </th>
+            <th>
+                結帳
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var order in @Model.Orders)
+        {
+            <tr>
+                <th>@order.OrderNumber</th>
+                <th>@order.Inserted</th>
+                <th>@order.TableId</th>
+                <th>@order.Sum</th>
+                <th>@((order.Status == Status.Occupied) ? "N" : "Y")</th>
+            </tr>
+        }
+    </tbody>
+</table>
+</div>

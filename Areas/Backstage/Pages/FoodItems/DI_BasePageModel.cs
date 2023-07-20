@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 
 
-namespace fungoodMVC.Pages.FoodItems
+namespace fungoodMVC.Areas.Backstage.Pages.FoodItems
 {
 	public class DI_BasePageModel : PageModel
 	{

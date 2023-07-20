@@ -1,19 +1,32 @@
 @page "/order"
 @model fungoodMVC.Pages.Order
+@using fungoodMVC.Models;
 @{
     ViewData["Title"] = "Order";
 }
 
-<h1>
+<h1 class="d-flex">
     菜單
     <a href="#modal"" class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#modal"">
         <i class="fa-solid fa-cart-shopping position-relative " style="color: #d19b3d;" >
             <span class="badge rounded-pill  translate-middle" id="cart-qty"></span>
         </i>
     </a>
+    <select class="form-select form-select-sm w-25 ms-auto required" id="table-selector">
+        <option value="" > 請選擇桌號 </option>
+        @foreach (var table in @Model.Tables)
+        {
+            @if (table.Status == Status.Occupied)
+            {
+            <option disabled> @table.Id 桌(使用中) </option>
+            }
+            else
+            {
+            <option value=@table.Id> @table.Id 桌 </option>
+            }
+        }
+    </select>
 </h1>
-<select>
-</select>
 <div class="container">
     <div class="d-flex flex-column align-items-center">
 
@@ -35,7 +48,7 @@
                                     <p class="text-center">@(item.Price)$</p>
                                 </div>
                                 <div class="col p-2">
-                                    <img src=@item.ImageSrc class="rounded"alt="暫無圖片" width="100" asp-append-version="true">
+                                    <img src=@item.ImageSrc class="rounded" alt="暫無圖片" width="100" asp-append-version="true">
                                 </div>
                                 <div class="col d-flex justify-content-end align-items-center">
                                     <div>
@@ -58,34 +71,6 @@
     </div>
 </div>
 <partial name="Shared/_CartPartial.cshtml"></partial>
-@* <div class="modal" tabindex="-1" role="dialog" id="modal">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">購物車</h5>
-      </div>
-      <div class="modal-body">
-        <table>
-            <thead>
-                <tr>
-                    <th>品名</th>
-                    <th>數量</th>
-                    <th>單價</th>
-                </tr>
-            </thead>
-            <tbody id="shopping-cart">
-
-            </tbody>
-        </table>
-      </div>
-      <p id="total"></p>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary">Submit</button>
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div> *@
 
 <script src="~/js/cartOperation.js" asp-append-version="true"></script>
 <script>

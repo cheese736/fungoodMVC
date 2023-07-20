@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace fungoodMVC.Migrations
 {
 	/// <inheritdoc />
-	public partial class adjustmodels : Migration
+	public partial class Adjustmodels : Migration
 	{
 		/// <inheritdoc />
 		protected override void Up(MigrationBuilder migrationBuilder)
