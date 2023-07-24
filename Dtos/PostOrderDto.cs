@@ -13,4 +13,11 @@ namespace fungoodMVC.Dtos
 		public string Name { get; set; } = string.Empty;
 		public Spiciness? Spiciness { get; set; }
 	}
+
+	public class EditOrderDto
+	{
+		public int Id { get; set; }
+		public int FoodItemId { get; set; }
+		public Spiciness? Spiciness { get; set; }
+	}
 }

@@ -3,7 +3,7 @@
       <button class="nav-link 
       @IdentifyActiveTab("Orders")
       p-0" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">
-        <a class="nav-link" asp-page="/Orders/Index">訂單管理</a>
+        <a class="nav-link" asp-page="/Orders/Index">訂單紀錄</a>
       </button>
     </li>
     <li class="nav-item" role="presentation">
@@ -22,7 +22,7 @@
     </li>
 </ul>
 <div class="tab-content " id="myTabContent">
-    <div class="tab-pane fade @IdentifyActiveContent("Orders") my-3" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">已結算訂單紀錄無法修改，修改未結算訂單請移至</div>
+    <div class="tab-pane fade @IdentifyActiveContent("Orders") my-3" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">已結算訂單紀錄無法修改，修改未結算訂單請移至餐桌狀態</div>
     <div class="tab-pane fade @IdentifyActiveContent("FoodItems") my-3" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">提供品項基本的CRUD功能</div>
     <div class="tab-pane fade @IdentifyActiveContent("Tables") my-3" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">餐桌使用狀況，點擊圖示可查看詳情</div>
 </div>

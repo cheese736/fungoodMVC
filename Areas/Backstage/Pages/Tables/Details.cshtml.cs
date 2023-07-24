@@ -13,19 +13,15 @@ namespace fungoodMVC.Areas.Backstage.Pages.Tables
 		private readonly DataContext _context;
 		public List<Models.Order> Orders { get; set; } = new List<Models.Order>();
 		public int TableId { get; set; }
+		public int OrderNumber { get; set; }
 
 		public Details(DataContext context)
 		{
 			_context = context;
 		}
 
-		public async Task<IActionResult> OnGetAsync(int? orderNumber)
+		public async Task<IActionResult> OnGetAsync(int orderNumber)
 		{
-			if (orderNumber == null)
-			{
-				return NotFound();
-			}
-
 			var orders = await _context.orders
 			.Include(o => o.FoodItem)
 			.Include(o => o.Table)
@@ -39,6 +35,7 @@ namespace fungoodMVC.Areas.Backstage.Pages.Tables
 			else
 			{
 				Orders = orders;
+				OrderNumber = orderNumber;
 				TableId = orders[0].Table!.Id;
 			}
 			return Page();

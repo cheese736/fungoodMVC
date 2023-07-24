@@ -28,8 +28,7 @@
             @if (table.Status == Status.Occupied)
             {
             <ul class="dropdown-menu " aria-labelledby="dropdownLink">
-                <a class="dropdown-item" 
-                href="Tables/@table.OrderNumer/Details" >
+                <a class="dropdown-item" asp-area="Backstage" asp-page="/Tables/Details" asp-route-orderNumber="@table.OrderNumer">
                 查看詳情
                 </a>
             </ul>

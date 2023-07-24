@@ -1,0 +1,114 @@
+@page "/Orders/{orderNumber}/Edit"
+@model fungoodMVC.Areas.Backstage.Pages.Orders.Edit
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<div class="d-flex justify-content-between">
+    <h1>編輯訂單內容 </h1>
+</div>
+
+<div>
+            <table class="m-auto w-75 table text-nowrap">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th class="text-center">資料庫ID</th>
+                    <th>品名</th>
+                    <th class="text-center">單價</th>
+                    <th class="text-center">辣度</th>
+                    <th>刪除</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    SelectList FoodItemSelectList = new SelectList(@Model.FoodItems, "Id", "Name");
+                    SelectList SpicinessSelectList = @Model.Spiciness;
+                }
+                @foreach (var order in @Model.Orders)
+                {
+                    var selectedFoodItemSelectedList = FoodItemSelectList.Select(f => {
+                        if (Int32.Parse(f.Value) == @order.FoodItem.Id)
+                        {
+                            f.Selected = true;
+                        }
+                        else
+                        {
+                            f.Selected = false;
+                        }
+                        return f;
+                    });
+                    <tr >
+                        <form class="order" action="" method="POST">
+                            <td></td>
+                            <td class="text-center">
+                                <input type="text" name="Id" value="@order.Id" hidden>@order.Id
+                            </td>
+                            <td>
+                                <select name="FoodItemId" asp-items="@selectedFoodItemSelectedList" class="form-select w-auto"></select>
+                            </td>
+                            <td class="text-center"></td>
+                            <td class="text-center">
+                                @if (@order.Spiciness is not null)
+                                {
+                                    var selectedSpicinessSelectedList = SpicinessSelectList.Select(s => {
+                                        if (s.Text == @order.Spiciness.ToString())
+                                        {
+                                            s.Selected = true;
+                                        }
+                                        else
+                                        {
+                                            s.Selected = false;
+                                        }
+                                        return s;
+                                    });
+                                <select asp-items="@selectedSpicinessSelectedList" class="form-select w-auto"
+                                name="Spiciness"></select>
+                                }
+                            </td>
+                            <td>
+                                <input type="checkbox">
+                            </td>
+                        </form>
+                    </tr>
+                }
+                <tr>
+                    <td>合計</td>
+                    <td></td>
+                    <td></td>
+                    <td class="text-center">
+                        @Model.Orders.Aggregate(0,(acc, current) => 
+                        {
+                            return acc + current.FoodItem.Price;
+                        })
+                    </td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="d-grid p-3 gap-2">
+            <button class="btn btn-secondary" type="button">
+                新增餐點
+            </button>
+            <button class="btn btn-secondary" type="button" onclick="submitMultipleForms()">
+                確認修改
+            </button>
+        </div>
+</div>
+
+<script>
+    function submitMultipleForms() {
+        const url = window.location.href
+        const forms = Array.from(document.querySelectorAll("form.order"))
+        Promise.all(forms.map(form => {
+            const data = new FormData(form)
+            return fetch(url,{
+                method : "POST",
+                body: data
+            })
+        }))
+        .then(location.reload())
+    }
+</script>
