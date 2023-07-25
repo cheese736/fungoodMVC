@@ -33,7 +33,6 @@ namespace fungoodMVC.Areas.Backstage.Pages.Orders
 					})
 					.Cast<dynamic>()
 					.ToListAsync();
-			Dumper.print(Orders);
 		}
 	}
 }
