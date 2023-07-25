@@ -19,7 +19,7 @@ builder.Services.AddDbContext<IdentityDbContext>(option =>
 {
 	option.UseSqlServer(builder.Configuration.GetConnectionString("AzureDbConnection"));
 });
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
+builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
 .AddRoles<IdentityRole>()
 .AddEntityFrameworkStores<IdentityDbContext>();
 

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using fungoodMVC.Data;
 using fungoodMVC.Dtos;
 using fungoodMVC.Helper;
 using fungoodMVC.Models;
@@ -19,7 +20,7 @@ namespace fungoodMVC.Pages
 	public class Order : PageModel
 	{
 		private readonly DataContext _context;
-		private readonly UserManager<IdentityUser> _userManager;
+		private readonly UserManager<ApplicationUser> _userManager;
 		private readonly IMapper _mapper;
 
 		public List<FoodItem> FoodItems { get; set; } = new List<FoodItem>();
@@ -29,7 +30,7 @@ namespace fungoodMVC.Pages
 
 
 
-		public Order(DataContext context, UserManager<IdentityUser> userManager, IMapper mapper)
+		public Order(DataContext context, UserManager<ApplicationUser> userManager, IMapper mapper)
 		{
 			_userManager = userManager;
 			_mapper = mapper;

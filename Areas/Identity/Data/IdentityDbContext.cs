@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace fungoodMVC.Data;
 
-public class IdentityDbContext : IdentityDbContext<IdentityUser>
+public class IdentityDbContext : IdentityDbContext<ApplicationUser>
 {
     public IdentityDbContext(DbContextOptions<IdentityDbContext> options)
         : base(options)
@@ -18,4 +18,10 @@ public class IdentityDbContext : IdentityDbContext<IdentityUser>
         // For example, you can rename the ASP.NET Identity table names and more.
         // Add your customizations after calling base.OnModelCreating(builder);
     }
+}
+
+public class ApplicationUser : IdentityUser
+{
+    public int Bonus { get; set; }
+    public int CumulativeConsumption { get; set; }
 }

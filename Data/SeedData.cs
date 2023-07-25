@@ -22,11 +22,11 @@ namespace fungoodMVC.Data
         private static async Task<string> EnsureUser(
             IServiceProvider serviceProvider, string userName, string initPw)
         {
-            var userManager = serviceProvider.GetService<UserManager<IdentityUser>>();
+            var userManager = serviceProvider.GetService<UserManager<ApplicationUser>>();
             var user = await userManager.FindByNameAsync(userName);
             if (user == null)
             {
-                user = new IdentityUser
+                user = new ApplicationUser
                 {
                     UserName = userName,
                     Email = userName,
@@ -51,7 +51,7 @@ namespace fungoodMVC.Data
                 ir = await roleManager.CreateAsync(new IdentityRole(role));
             }
 
-            var userManager = serviceProvider.GetService<UserManager<IdentityUser>>();
+            var userManager = serviceProvider.GetService<UserManager<ApplicationUser>>();
 
             var user = await userManager.FindByIdAsync(uid) ?? throw new Exception("User not exist");
 
