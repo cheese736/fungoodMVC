@@ -3,7 +3,6 @@
 @{
     ViewData["Title"] = "Details";
 }
-
 <div class="d-flex justify-content-between">
     <h1>訂單內容 </h1>
     <h3>@Model.TableId 號桌</h3>
@@ -33,11 +32,15 @@
                 <tr>
                     <td>合計</td>
                     <td></td>
+
+                @{
+                    var totalPrice = @Model.Orders.Aggregate(0, (acc, current) =>
+                    {
+                        return acc + current.FoodItem.Price;
+                    });
+                }
                     <td class="text-center">
-                        @Model.Orders.Aggregate(0,(acc, current) => 
-                        {
-                            return acc + current.FoodItem.Price;
-                        })
+                        @totalPrice
                     </td>
                     <td></td>
                 </tr>
@@ -47,8 +50,33 @@
             <a class="btn btn-secondary" type="button" href="/Orders/@Model.OrderNumber/Edit">
                 後台編輯訂單
             </a>
-            <button class="btn btn-secondary" type="button">
+        <button class="btn btn-secondary" type="submit" data-bs-toggle="modal" data-bs-target="#checkOutModal">
                 結帳
             </button>
         </div>
 </div>
+<!-- Modal -->
+<div class="modal fade" id="checkOutModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">
+                    @Model.TableId 號桌結帳確認
+                </h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body m-auto d-flex flex-column justify-content-center">
+                <p>總額為 @totalPrice 元</p>
+                @if(Model.UserName is not null)
+                {
+                    <p>會員 @Model.UserName 可從此筆消費獲得 @(totalPrice / 10) 的點數</p>
+                }
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">上一頁</button>
+                <button type="button" class="btn btn-primary">確認結帳</button>
+            </div>
+        </div>
+    </div>
+</div>
+
