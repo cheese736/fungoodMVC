@@ -118,6 +118,8 @@ async function sendOrder() {
 		},
 		body: JSON.stringify(cart)
 	})
+	clearCart()
+	location.reload()
 }
 
 function totalCaculator() {
