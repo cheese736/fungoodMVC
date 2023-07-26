@@ -33,7 +33,7 @@
                 <th>@order.Inserted</th>
                 <th>@order.TableId</th>
                 <th>@order.Sum</th>
-                <th>@((order.Status == Status.Occupied) ? "N" : "Y")</th>
+                <th>@(order.Check ? "Y" : "N")</th>
             </tr>
         }
     </tbody>

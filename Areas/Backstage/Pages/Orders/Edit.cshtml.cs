@@ -59,22 +59,12 @@ namespace fungoodMVC.Areas.Backstage.Pages.Orders
 
 		public async Task OnPostAsync()
 		{
-			if (ModelState.IsValid)
-			{
-				System.Console.WriteLine("Valid");
-			}
-			else
-			{
-				var errors = ModelState.Select(x => x.Value.Errors)
-									.Where(y => y.Count > 0)
-									.ToList();
-				Dumper.print(errors);
-			}
 			var order = await _context.orders.FirstOrDefaultAsync(o => o.Id == editOrderDto.Id);
-			if (order is not null)
+			var foodItem = await _context.food_items.FirstOrDefaultAsync(f => f.Id == editOrderDto.FoodItemId);
+			if (order != null && foodItem != null)
 			{
 				order.Id = editOrderDto.Id;
-				order.FoodItem = await _context.food_items.FirstOrDefaultAsync(f => f.Id == editOrderDto.FoodItemId);
+				order.FoodItem = foodItem;
 				order.Spiciness = editOrderDto.Spiciness;
 			}
 			await _context.SaveChangesAsync();
