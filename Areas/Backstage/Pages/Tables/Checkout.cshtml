@@ -1,0 +1,29 @@
+@page "/Backstage/Tables/{tableId}/Checkout"
+@model fungoodMVC.Areas.Backstage.Pages.Tables.Checkout
+@{
+    ViewData["Title"] = "Checkout";
+}
+<div class="d-flex justify-content-between mb-3" style="margin-top: 20vh;">
+    <h1>確認結帳</h1>
+    <h3>@Model.TableId 號桌</h3>
+</div>
+
+<div class="card border-dark mb-3">
+    <div class="card-body">
+            <p>總額為 @Model.TotalPrice 元</p>
+            @if(Model.UserName != null)
+            {
+                <p>會員 @Model.UserName 可從此筆消費獲得 @(Model.TotalPrice / 10) 的點數</p>
+            }
+    </div>
+    <div class="card-footer d-flex justify-content-between">
+            <a type="button" class="btn btn-secondary" asp-area="Backstage" asp-page="Details" asp-route-tableId=@Model.TableId>
+                上一頁
+            </a>
+            <form method="POST" class="d-inline">
+                <button type="submit" class="btn btn-outline-primary">
+                    確認結帳
+                </button>
+            </form>
+    </div>
+</div>
