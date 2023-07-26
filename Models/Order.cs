@@ -14,6 +14,7 @@ namespace fungoodMVC.Models
 		public Table? Table { get; set; }
 		public Spiciness? Spiciness { get; set; }
 		public string? UserId { get; set; }
+		public bool Check { get; set; }
 	}
 
 	public enum Spiciness
