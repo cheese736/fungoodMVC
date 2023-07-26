@@ -11,25 +11,25 @@ namespace fungoodMVC.Areas.Backstage.Pages.Tables
 	public class Details : PageModel
 	{
 		private readonly DataContext _context;
-        private readonly IdentityDbContext _identityDbContext;
+		private readonly IdentityDbContext _identityDbContext;
 
-        public List<Models.Order> Orders { get; set; } = new List<Models.Order>();
+		public List<Models.Order> Orders { get; set; } = new List<Models.Order>();
 		public int TableId { get; set; }
 		public int OrderNumber { get; set; }
 		public string? UserName { get; set; }
 
-        public Details(DataContext context, IdentityDbContext identityDbContext)
+		public Details(DataContext context, IdentityDbContext identityDbContext)
 		{
 			_context = context;
-            _identityDbContext = identityDbContext;
-        }
+			_identityDbContext = identityDbContext;
+		}
 
-		public async Task<IActionResult> OnGetAsync(int orderNumber)
+		public async Task<IActionResult> OnGetAsync(int tableId)
 		{
 			var orders = await _context.orders
 			.Include(o => o.FoodItem)
 			.Include(o => o.Table)
-			.Where(o => o.OrderNumber == orderNumber)
+			.Where(o => (o.Table != null) && (o.Table.Id == tableId))
 			.ToListAsync();
 			var userId = orders[0].UserId;
 			if (userId is not null)
@@ -39,15 +39,15 @@ namespace fungoodMVC.Areas.Backstage.Pages.Tables
 			}
 
 
-            if (orders == null)
+			if (orders == null)
 			{
 				return NotFound();
 			}
 			else
 			{
 				Orders = orders;
-				OrderNumber = orderNumber;
-				TableId = orders[0].Table!.Id;
+				OrderNumber = orders[0].OrderNumber;
+				TableId = tableId;
 			}
 			return Page();
 		}
