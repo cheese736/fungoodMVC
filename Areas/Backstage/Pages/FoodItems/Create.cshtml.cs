@@ -16,18 +16,18 @@ using fungoodMVC.Authorization;
 namespace fungoodMVC.Areas.Backstage.Pages.FoodItems
 {
 	[Authorize(Roles = "staff")]
-	public class CreateModel : DI_BasePageModel
+	public class CreateModel : PageModel
 	{
+		private readonly fungoodMVC.Data.DataContext _context;
 
-		public CreateModel(DataContext context, IAuthorizationService authorizationService, UserManager<IdentityUser> userManager)
-		 : base(context, authorizationService, userManager)
+		public CreateModel(fungoodMVC.Data.DataContext context)
 		{
-
+			_context = context;
 		}
 
 		public IActionResult OnGet()
 		{
-			ViewData["CategoryId"] = new SelectList(Context.categories, "Id", "Name");
+			ViewData["CategoryId"] = new SelectList(_context.categories, "Id", "Name");
 			return Page();
 		}
 
@@ -38,13 +38,13 @@ namespace fungoodMVC.Areas.Backstage.Pages.FoodItems
 		// To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
 		public async Task<IActionResult> OnPostAsync()
 		{
-			if (!ModelState.IsValid || Context.food_items == null || FoodItem == null)
+			if (!ModelState.IsValid || _context.food_items == null || FoodItem == null)
 			{
 				return Page();
 			}
 
-			Context.food_items.Add(FoodItem);
-			await Context.SaveChangesAsync();
+			_context.food_items.Add(FoodItem);
+			await _context.SaveChangesAsync();
 
 			return RedirectToPage("./Index");
 		}
