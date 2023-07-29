@@ -29,7 +29,7 @@ namespace fungoodMVC.Areas.Backstage.Pages.Tables
 			var orders = await _context.orders
 			.Include(o => o.FoodItem)
 			.Include(o => o.Table)
-			.Where(o => (o.Table != null) && (o.Table.Id == tableId))
+			.Where(o => (o.Table != null) && (o.Table.Id == tableId) && (o.Check == false))
 			.ToListAsync();
 			var userId = orders[0].UserId;
 			if (userId is not null)
