@@ -1,0 +1,78 @@
+@page "/Backstage/Orders/{orderNumber}/Create"
+@model fungoodMVC.Areas.Backstage.Pages.Orders.Create
+@{
+    ViewData["Title"] = "後台新增餐點";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div>
+@{
+    ViewData["Title"] = "Order";
+}
+
+<h1 class="d-flex">
+    菜單
+    <a href="#modal"" class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#modal"">
+        <i class="fa-solid fa-cart-shopping position-relative " style="color: #d19b3d;" >
+            <span class="badge rounded-pill  translate-middle" id="cart-qty"></span>
+        </i>
+    </a>
+    <select class="form-select form-select-sm w-25 ms-auto required" id="table-selector">
+        <option value="@Model.Table.Id" disabled selected> 桌號: @Model.Table.Id</option>
+    </select>
+</h1>
+<div class="container">
+    <div class="d-flex flex-column align-items-center">
+
+    @foreach (var category in @Model.Categories)
+    {
+        <div class="card mb-2" style="width:90%">
+            <div class="card-header">
+                @category.Name
+            </div>
+            <div class="card-body p-0">
+                @foreach (var item in @Model.FoodItems)
+                {
+                    @if (@item.CategoryId == @category.Id)
+                    {
+                        <div class="container">
+                            <div class="row">
+                                <div class="col">
+                                    <p>@item.Name</p>
+                                    <p class="text-center">@(item.Price)$</p>
+                                </div>
+                                <div class="col p-2">
+                                    <img src=@item.ImageSrc class="rounded" alt="暫無圖片" width="100" asp-append-version="true">
+                                </div>
+                                <div class="col d-flex justify-content-end align-items-center">
+                                    <div>
+                                        <button class="btn btn-lg" onclick="addToCart(this)"
+                                        data-id="@(item.Id)" 
+                                        data-price="@item.Price" 
+                                        data-name="@item.Name"
+                                        data-spicy="@item.HasSpiciness">
+                                            <i class="fa-solid fa-cart-plus fs-2" style="color: #c28419;"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+    }
+    </div>
+</div>
+<partial name="/Pages/Shared/_CartPartial.cshtml"></partial>
+
+
+<script>
+    localStorage.removeItem("cart")
+	localStorage.removeItem("cartHtml")
+</script>
+<script src="~/js/cartOperation.js" asp-append-version="true"></script>
+<script>
+    updateCartQty()
+</script>
