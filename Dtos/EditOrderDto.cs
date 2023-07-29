@@ -3,15 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using fungoodMVC.Models;
-
+using System.Text.Json.Serialization;
 namespace fungoodMVC.Dtos
 {
-	public class PostOrderDto
+	public class EditOrderDto
 	{
-		public int FoodItem { get; set; }
-		public int? Table { get; set; }
-		public string Name { get; set; } = string.Empty;
+		public int Id { get; set; }
+		public int FoodItemId { get; set; }
 		public Spiciness? Spiciness { get; set; }
+		public bool ShouldBeDelete { get; set; } = false;
 	}
-
 }
