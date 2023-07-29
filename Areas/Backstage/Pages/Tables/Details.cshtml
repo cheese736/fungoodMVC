@@ -47,7 +47,7 @@
             </tbody>
         </table>
         <div class="d-grid p-3 gap-2">
-            <a class="btn btn-secondary" href="/Orders/@Model.OrderNumber/Edit">
+            <a class="btn btn-secondary" asp-area="Backstage" asp-page="/Orders/Edit" asp-route-orderNumber="@Model.OrderNumber">
                 後台編輯訂單
             </a>
             <a class="btn btn-secondary" asp-area="Backstage" asp-page="Checkout" asp-route-tableId=@Model.TableId>
