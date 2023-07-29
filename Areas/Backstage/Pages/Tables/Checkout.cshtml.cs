@@ -69,7 +69,7 @@ namespace fungoodMVC.Areas.Backstage.Pages.Tables
 			return await _context.orders
 			.Include(o => o.FoodItem)
 			.Include(o => o.Table)
-			.Where(o => (o.Table != null) && (o.Table.Id == tableId))
+			.Where(o => (o.Check == false) && (o.Table.Id == tableId))
 			.ToListAsync();
 		}
 
