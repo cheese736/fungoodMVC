@@ -2,7 +2,7 @@ const cart = JSON.parse(localStorage.getItem("cart")) ?? []
 const modal = document.querySelector('#shopping-cart')
 const totalPrice = document.querySelector('#total')
 
-if (!modal.innerHTML.trim() && localStorage.getItem('cartHtml')){
+if (!modal?.innerHTML.trim() && localStorage.getItem('cartHtml')){
 	modal.innerHTML = localStorage.getItem('cartHtml')
 	totalPrice.innerHTML = `總共: ${totalCaculator()}元`
 }
@@ -91,8 +91,7 @@ function updateLocalStorage() {
 	localStorage.setItem("cart",cartJSON)
 	localStorage.setItem("cartHtml",cartHtml)
 }
-
-async function sendOrder() {
+function sendOrder() {
 	if (cart.length === 0) {
 		alert("還沒點餐唷")
 		return
@@ -110,7 +109,8 @@ async function sendOrder() {
 	})
 	const url = window.location.href
 	const token = document.querySelector('input[name="__RequestVerificationToken"]').getAttribute("value")
-	const res = await fetch(url,{
+	console.log(cart)
+	fetch(url,{
 		method : "POST",
 		headers: {
 			"RequestVerificationToken": token,
@@ -118,12 +118,47 @@ async function sendOrder() {
 		},
 		body: JSON.stringify(cart)
 	})
-	clearCart()
-	location.reload()
+	.then(res => {
+		if (res.redirected) {
+			window.location.href = res.url;
+		} else {
+			clearCart()
+		}
+	})
+	
 }
 
 function totalCaculator() {
 	return cart.reduce((acc, current) => {
 		return acc + current.Price
 	},0)
+}
+
+function submitEditedForms() {
+	const url = window.location.href
+	const token = document.querySelector('input[name="__RequestVerificationToken"]').getAttribute("value")
+	const forms = Array.from(document.querySelectorAll("form.order"))
+	const data = forms.map(form => {
+		const jsonObject = { }
+		new FormData(form).forEach((value, key) => {
+			if (key != "__RequestVerificationToken") {
+				jsonObject[key] = helper.formDataTypeConverter(key,value)
+			}
+		})
+		return jsonObject
+	})
+	console.log(data)
+	fetch(url, {
+		method: "POST",
+		headers: {
+		"RequestVerificationToken": token,
+		"Content-Type": "application/json"
+		},
+		body: JSON.stringify(data)
+	})
+	.then(res => {
+		if (res.redirected) {
+			window.location.href = res.url
+		}
+	})
 }
