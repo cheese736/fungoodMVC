@@ -14,12 +14,13 @@ using Microsoft.AspNetCore.Identity;
 namespace fungoodMVC.Areas.Backstage.Pages.FoodItems
 {
 	[Authorize(Roles = "staff")]
-	public class DeleteModel : DI_BasePageModel
+	public class DeleteModel : PageModel
 	{
-		public DeleteModel(DataContext context, IAuthorizationService authorizationService, UserManager<IdentityUser> userManager)
-		 : base(context, authorizationService, userManager)
-		{
+		private readonly DataContext _context;
 
+		public DeleteModel(DataContext context)
+		{
+			_context = context;
 		}
 
 		[BindProperty]
@@ -27,12 +28,12 @@ namespace fungoodMVC.Areas.Backstage.Pages.FoodItems
 
 		public async Task<IActionResult> OnGetAsync(int? id)
 		{
-			if (id == null || Context.food_items == null)
+			if (id == null || _context.food_items == null)
 			{
 				return NotFound();
 			}
 
-			var fooditem = await Context.food_items
+			var fooditem = await _context.food_items
 			.Include(f => f.category)
 			.FirstOrDefaultAsync(m => m.Id == id);
 
@@ -49,17 +50,17 @@ namespace fungoodMVC.Areas.Backstage.Pages.FoodItems
 
 		public async Task<IActionResult> OnPostAsync(int? id)
 		{
-			if (id == null || Context.food_items == null)
+			if (id == null || _context.food_items == null)
 			{
 				return NotFound();
 			}
-			var fooditem = await Context.food_items.FindAsync(id);
+			var fooditem = await _context.food_items.FindAsync(id);
 
 			if (fooditem != null)
 			{
 				FoodItem = fooditem;
-				Context.food_items.Remove(FoodItem);
-				await Context.SaveChangesAsync();
+				_context.food_items.Remove(FoodItem);
+				await _context.SaveChangesAsync();
 			}
 
 			return RedirectToPage("./Index");
