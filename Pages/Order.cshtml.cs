@@ -21,7 +21,6 @@ namespace fungoodMVC.Pages
 	{
 		private readonly DataContext _context;
 		private readonly UserManager<ApplicationUser> _userManager;
-		private readonly IMapper _mapper;
 
 		public List<FoodItem> FoodItems { get; set; } = new List<FoodItem>();
 		public List<Category> Categories { get; set; } = new List<Category>();
@@ -30,10 +29,9 @@ namespace fungoodMVC.Pages
 
 
 
-		public Order(DataContext context, UserManager<ApplicationUser> userManager, IMapper mapper)
+		public Order(DataContext context, UserManager<ApplicationUser> userManager)
 		{
 			_userManager = userManager;
-			_mapper = mapper;
 			_context = context;
 		}
 
