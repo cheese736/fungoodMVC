@@ -16,28 +16,22 @@ namespace fungoodMVC.Areas.Backstage.Pages.Orders
 	public class Edit : PageModel
 	{
 		private readonly DataContext _context;
+
 		public List<Models.Order> Orders { get; set; } = new List<Models.Order>();
 		public int TableId { get; set; }
 		public List<FoodItem> FoodItems = new List<FoodItem>();
 		public SelectList Spiciness { get; set; } = new SelectList(Models.Spiciness.GetValues(typeof(Spiciness)));
-
-		[BindProperty]
-		public EditOrderDto editOrderDto { get; set; } = new EditOrderDto();
+		public int OrderNumber { get; set; }
 
 		public Edit(DataContext context)
 		{
 			_context = context;
 		}
 
-		public async Task<IActionResult> OnGet(int? orderNumber)
+		public async Task<IActionResult> OnGet(int orderNumber)
 		{
-			if (orderNumber == null)
-			{
-				return NotFound();
-			}
-
+			OrderNumber = orderNumber;
 			FoodItems = await _context.food_items.ToListAsync();
-
 
 			var orders = await _context.orders
 			.Include(o => o.FoodItem)
@@ -57,17 +51,43 @@ namespace fungoodMVC.Areas.Backstage.Pages.Orders
 			return Page();
 		}
 
-		public async Task OnPostAsync()
+		public async Task<IActionResult> OnPost([FromBody] List<EditOrderDto> data, [FromRoute] int orderNumber)
 		{
-			var order = await _context.orders.FirstOrDefaultAsync(o => o.Id == editOrderDto.Id);
-			var foodItem = await _context.food_items.FirstOrDefaultAsync(f => f.Id == editOrderDto.FoodItemId);
-			if (order != null && foodItem != null)
+			if (ModelState.IsValid)
 			{
-				order.Id = editOrderDto.Id;
-				order.FoodItem = foodItem;
-				order.Spiciness = editOrderDto.Spiciness;
+				//go on as normal
 			}
-			await _context.SaveChangesAsync();
+			else
+			{
+				var errors = ModelState.Select(x => x.Value.Errors)
+										.Where(y => y.Count > 0)
+										.ToList();
+				Dumper.print(errors);
+			}
+			FoodItems = await _context.food_items.ToListAsync();
+			List<Order> orders = await _context.orders.Include(o => o.Table).Where(o => o.OrderNumber == orderNumber && o.Table!.Status == Status.Occupied).ToListAsync();
+			try
+			{
+				orders.ForEach(o =>
+				{
+					var d = data.First(d => d.Id == o.Id);
+					if (d.ShouldBeDelete)
+					{
+						_context.Remove(o);
+					}
+					else
+					{
+						o.FoodItem = FoodItems.First(f => f.Id == d.FoodItemId);
+						o.Spiciness = (!o.FoodItem.HasSpiciness) ? null : (d.Spiciness == null) ? 0 : d.Spiciness;
+					}
+				});
+				await _context.SaveChangesAsync();
+			}
+			catch (System.Exception ex)
+			{
+				Console.WriteLine($"Processing failed: {ex.Message}");
+			}
+			return RedirectToPage("../Tables/Details", new { tableId = orders[0].Table.Id });
 		}
 	}
 }

@@ -1,5 +1,6 @@
-@page "/Orders/{orderNumber}/Edit"
+@page "/Backstage/Orders/{orderNumber}/Edit"
 @model fungoodMVC.Areas.Backstage.Pages.Orders.Edit
+@using fungoodMVC.Models
 
 @{
     ViewData["Title"] = "Edit";
@@ -24,7 +25,7 @@
             <tbody>
                 @{
                     SelectList FoodItemSelectList = new SelectList(@Model.FoodItems, "Id", "Name");
-                    SelectList SpicinessSelectList = @Model.Spiciness;
+                    var SpicinessSelectList = Html.GetEnumSelectList<Spiciness>();
                 }
                 @foreach (var order in @Model.Orders)
                 {
@@ -39,39 +40,39 @@
                         }
                         return f;
                     });
-                    <tr >
-                        <form class="order" action="" method="POST">
-                            <td></td>
-                            <td class="text-center">
-                                <input type="text" name="Id" value="@order.Id" hidden>@order.Id
-                            </td>
-                            <td>
-                                <select name="FoodItemId" asp-items="@selectedFoodItemSelectedList" class="form-select w-auto"></select>
-                            </td>
-                            <td class="text-center"></td>
-                            <td class="text-center">
-                                @if (@order.Spiciness is not null)
-                                {
-                                    var selectedSpicinessSelectedList = SpicinessSelectList.Select(s => {
-                                        if (s.Text == @order.Spiciness.ToString())
-                                        {
-                                            s.Selected = true;
-                                        }
-                                        else
-                                        {
-                                            s.Selected = false;
-                                        }
-                                        return s;
-                                    });
-                                <select asp-items="@selectedSpicinessSelectedList" class="form-select w-auto"
-                                name="Spiciness"></select>
-                                }
-                            </td>
-                            <td>
-                                <input type="checkbox">
-                            </td>
-                        </form>
-                    </tr>
+                    <form class="order" method="POST">
+                        <tr >
+                        <td></td>
+                        <td class="text-center">
+                            <input type="number" name="Id" value="@order.Id" hidden>@order.Id
+                        </td>
+                        <td>
+                            <select name="FoodItemId" asp-items="@selectedFoodItemSelectedList" class="form-select w-auto" type="number"></select>
+                        </td>
+                        <td class="text-center"></td>
+                        <td class="text-center">
+                            @if (@order.Spiciness is not null)
+                            {
+                                var selectedSpicinessSelectedList = SpicinessSelectList.Select(s => {
+                                    if (s.Text == @order.Spiciness.ToString())
+                                    {
+                                        s.Selected = true;
+                                    }
+                                    else
+                                    {
+                                        s.Selected = false;
+                                    }
+                                    return s;
+                                });
+                            <select asp-items="@selectedSpicinessSelectedList" class="form-select w-auto"
+                            name="Spiciness"></select>
+                            }
+                        </td>
+                        <td>
+                            <input type="checkbox" name="ShouldBeDelete" value="true">
+                        </td>
+                        </tr>
+                    </form>
                 }
                 <tr>
                     <td>合計</td>
@@ -89,26 +90,20 @@
             </tbody>
         </table>
         <div class="d-grid p-3 gap-2">
-            <button class="btn btn-secondary" type="button">
+            <a class="btn btn-secondary" asp-area="Backstage" asp-page="/Orders/Create" asp-route-orderNumber="@Model.OrderNumber">
                 新增餐點
-            </button>
-            <button class="btn btn-secondary" type="button" onclick="submitMultipleForms()">
+            </a>
+            <button class="btn btn-secondary" type="button" onclick="submitEditedForms()">
                 確認修改
             </button>
         </div>
 </div>
 
+
+<script src="~/js/helper.js" asp-append-version="true"></script>
+<script src="~/js/cartOperation.js" asp-append-version="true"></script>
+
 <script>
-    function submitMultipleForms() {
-        const url = window.location.href
-        const forms = Array.from(document.querySelectorAll("form.order"))
-        Promise.all(forms.map(form => {
-            const data = new FormData(form)
-            return fetch(url,{
-                method : "POST",
-                body: data
-            })
-        }))
-        .then(location.reload())
-    }
+
+
 </script>
