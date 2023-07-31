@@ -12,7 +12,6 @@ namespace fungoodMVC.Models
 		[DatabaseGenerated(DatabaseGeneratedOption.Computed)]
 		public DateTime Inserted { get; set; }
 
-		[ConcurrencyCheck]
 		[DatabaseGenerated(DatabaseGeneratedOption.Computed)]
 		public DateTime LastUpdated { get; set; }
 	}
