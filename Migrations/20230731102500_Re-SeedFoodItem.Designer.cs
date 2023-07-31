@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using fungoodMVC.Data;
 
@@ -11,9 +12,11 @@ using fungoodMVC.Data;
 namespace fungoodMVC.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20230731102500_Re-SeedFoodItem")]
+    partial class ReSeedFoodItem
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -36,7 +39,7 @@ namespace fungoodMVC.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("categories", (string)null);
+                    b.ToTable("categories");
 
                     b.HasData(
                         new
@@ -106,7 +109,7 @@ namespace fungoodMVC.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("food_items", (string)null);
+                    b.ToTable("food_items");
 
                     b.HasData(
                         new
@@ -209,7 +212,7 @@ namespace fungoodMVC.Migrations
 
                     b.HasIndex("TableId");
 
-                    b.ToTable("orders", (string)null);
+                    b.ToTable("orders");
                 });
 
             modelBuilder.Entity("fungoodMVC.Models.Table", b =>
@@ -228,7 +231,7 @@ namespace fungoodMVC.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("tables", (string)null);
+                    b.ToTable("tables");
 
                     b.HasData(
                         new
@@ -287,7 +290,7 @@ namespace fungoodMVC.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("users", (string)null);
+                    b.ToTable("users");
                 });
 
             modelBuilder.Entity("fungoodMVC.Models.FoodItem", b =>
