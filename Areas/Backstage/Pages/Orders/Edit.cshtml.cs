@@ -59,8 +59,8 @@ namespace fungoodMVC.Areas.Backstage.Pages.Orders
 			}
 			else
 			{
-				var errors = ModelState.Select(x => x.Value.Errors)
-										.Where(y => y.Count > 0)
+				var errors = ModelState.Select(x => x.Value?.Errors)
+										.Where(y => y?.Count > 0)
 										.ToList();
 				Dumper.print(errors);
 			}

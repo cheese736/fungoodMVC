@@ -34,7 +34,7 @@ namespace fungoodMVC.Areas.Backstage.Pages.FoodItems
 			}
 
 			var fooditem = await _context.food_items
-			.Include(f => f.category)
+			.Include(f => f.Category)
 			.FirstOrDefaultAsync(m => m.Id == id);
 
 			if (fooditem == null)

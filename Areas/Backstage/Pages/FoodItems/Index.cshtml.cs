@@ -30,7 +30,7 @@ namespace fungoodMVC.Areas.Backstage.Pages.FoodItems
 			if (_context.food_items != null)
 			{
 				FoodItem = await _context.food_items
-				.Include(f => f.category).ToListAsync();
+				.Include(f => f.Category).ToListAsync();
 			}
 		}
 	}

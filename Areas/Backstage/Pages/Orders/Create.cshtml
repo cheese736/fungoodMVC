@@ -34,7 +34,7 @@
             <div class="card-body p-0">
                 @foreach (var item in @Model.FoodItems)
                 {
-                    @if (@item.CategoryId == @category.Id)
+                    @if (@item.Category.Id == @category.Id)
                     {
                         <div class="container">
                             <div class="row">
