@@ -1,3 +1,4 @@
+using System.Linq;
 public static class FileUploadHelper
 {
 
@@ -33,5 +34,17 @@ public static class FileUploadHelper
 			return Path.Combine("~/uploads/", uniqueFileName);
 		}
 		return string.Empty;
+	}
+
+	public static void DeleteFileUnderUploads(IWebHostEnvironment environment, string path)
+	{
+		string filename = path.Split('/').Last();
+		string targetPath = Path.Combine(environment.WebRootPath, "uploads", filename);
+		if (File.Exists(targetPath))
+		{
+			File.Delete(targetPath);
+			System.Console.WriteLine($"File: {targetPath} has been deleted due to image replacement");
+		}
+
 	}
 }

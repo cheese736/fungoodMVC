@@ -11,10 +11,12 @@ namespace fungoodMVC.Areas.Backstage.Pages.FoodItems
 	public class EditModel : PageModel
 	{
 		private readonly fungoodMVC.Data.DataContext _context;
+		private readonly IWebHostEnvironment _environment;
 
-		public EditModel(fungoodMVC.Data.DataContext context)
+		public EditModel(fungoodMVC.Data.DataContext context, IWebHostEnvironment environment)
 		{
 			_context = context;
+			_environment = environment;
 		}
 
 		[BindProperty]
@@ -42,13 +44,18 @@ namespace fungoodMVC.Areas.Backstage.Pages.FoodItems
 
 		// To protect from overposting attacks, enable the specific properties you want to bind to.
 		// For more details, see https://aka.ms/RazorPagesCRUD.
-		public async Task<IActionResult> OnPostAsync()
+		public async Task<IActionResult> OnPostAsync([FromForm] IFormFile foodImage)
 		{
 			FoodItem.Category = await _context.categories.FirstAsync(c => c.Id == FoodItem.CategoryId);
-			Dumper.print(FoodItem);
-			var entity = _context.Attach(FoodItem);
-			entity.State = EntityState.Modified;
 
+			string path = await FileUploadHelper.CopyFileAndGeneratePath(_environment, foodImage);
+			if (path != string.Empty)
+			{
+				FileUploadHelper.DeleteFileUnderUploads(_environment, FoodItem.ImageSrc);
+				FoodItem.ImageSrc = path;
+			}
+
+			_context.Attach(FoodItem).State = EntityState.Modified;
 			try
 			{
 				_context.SaveChanges();
