@@ -1,14 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using fungoodMVC.Models;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Logging;
 
 namespace fungoodMVC.Areas.Backstage.Pages.Tables
 {
+	[Authorize(Roles = "staff")]
 	public class Index : PageModel
 	{
 		private readonly DataContext _context;

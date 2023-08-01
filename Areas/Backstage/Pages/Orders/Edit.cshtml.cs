@@ -1,18 +1,14 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using fungoodMVC.Dtos;
 using fungoodMVC.Helper;
 using fungoodMVC.Models;
-using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.Extensions.Logging;
 
 namespace fungoodMVC.Areas.Backstage.Pages.Orders
 {
+	[Authorize(Roles = "staff")]
 	public class Edit : PageModel
 	{
 		private readonly DataContext _context;
