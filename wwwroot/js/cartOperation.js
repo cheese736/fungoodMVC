@@ -134,31 +134,3 @@ function totalCaculator() {
 	},0)
 }
 
-function submitEditedForms() {
-	const url = window.location.href
-	const token = document.querySelector('input[name="__RequestVerificationToken"]').getAttribute("value")
-	const forms = Array.from(document.querySelectorAll("form.order"))
-	const data = forms.map(form => {
-		const jsonObject = { }
-		new FormData(form).forEach((value, key) => {
-			if (key != "__RequestVerificationToken") {
-				jsonObject[key] = helper.formDataTypeConverter(key,value)
-			}
-		})
-		return jsonObject
-	})
-	console.log(data)
-	fetch(url, {
-		method: "POST",
-		headers: {
-		"RequestVerificationToken": token,
-		"Content-Type": "application/json"
-		},
-		body: JSON.stringify(data)
-	})
-	.then(res => {
-		if (res.redirected) {
-			window.location.href = res.url
-		}
-	})
-}
