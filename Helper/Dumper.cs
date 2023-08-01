@@ -13,7 +13,7 @@ namespace fungoodMVC.Helper
 		public static void LogModelStateErrors(ModelStateDictionary modelState)
 		{
 			var errors = modelState.Select(x => x.Value.Errors)
-			.Where(y => y.Count > 0)
+			.Where(y => y?.Count > 0)
 			.ToList();
 			errors.ForEach(e => Dumper.print(e));
 		}

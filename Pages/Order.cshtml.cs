@@ -1,19 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
-using fungoodMVC.Data;
 using fungoodMVC.Dtos;
-using fungoodMVC.Helper;
 using fungoodMVC.Models;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.Extensions.Logging;
 
 namespace fungoodMVC.Pages
 {
@@ -62,7 +51,7 @@ namespace fungoodMVC.Pages
 				{
 					OrderNumber = orderNumber,
 					FoodItem = FoodItems.Find(f => (f.Id == item.FoodItem))!,
-					Table = Tables.Find(t => (t.Id == tableId)),
+					Table = Tables.First(t => (t.Id == tableId)),
 					Spiciness = item.Spiciness,
 					UserId = userId
 				};

@@ -1,19 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using fungoodMVC.Data;
 using fungoodMVC.Models;
-using fungoodMVC.Areas.Backstage.Pages.FoodItems;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
-using Azure;
-using fungoodMVC.Authorization;
 using fungoodMVC.Helper;
-using System.ComponentModel.DataAnnotations;
 using fungoodMVC.Dtos;
 
 namespace fungoodMVC.Areas.Backstage.Pages.FoodItems
@@ -47,15 +37,8 @@ namespace fungoodMVC.Areas.Backstage.Pages.FoodItems
 		{
 			if (!ModelState.IsValid || _context.food_items == null || FoodItemDto == null)
 			{
-				var errors = ModelState.Select(x => x.Value.Errors)
-						.Where(y => y.Count > 0)
-						.ToList();
-				errors.ForEach(e => Dumper.print(e));
-
 				var categorySelectList = new SelectList(_context.categories, "Id", "Name");
-				Dumper.print(categorySelectList);
 				categorySelectList.First().Selected = true;
-				Dumper.print(categorySelectList);
 				ViewData["CategorySelectList"] = categorySelectList;
 				return Page();
 			}
