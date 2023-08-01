@@ -35,7 +35,7 @@
                     <div class="col-3">
                         <p class="my-auto">現有圖片</p>
                         <div>
-                            <img src=@Model.FoodItem.ImageSrc class="rounded" alt="暫無圖片"  width="100">
+                            <img src=@Model.FoodItem.ImageSrc class="rounded" alt="暫無圖片"  width="100" asp-append-version="true">
                         </div>
                         <input asp-for="FoodItem.ImageSrc" class="form-control" hidden/>
                     </div>
