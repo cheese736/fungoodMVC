@@ -122,6 +122,7 @@ function sendOrder() {
 		if (res.redirected) {
 			window.location.href = res.url;
 		} else {
+			alert("點餐成功，即將清空點單")
 			clearCart()
 		}
 	})
