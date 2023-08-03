@@ -25,6 +25,12 @@
                             <i class="fa-solid fa-utensils"></i>
                             </a>
                         </li>
+                        <li class="nav-item text-nowrap">
+                            <a class="nav-link text-muted text-decoration-line-through" data-bs-toggle="modal" data-bs-target="#firstLoadReminder">
+                            後台
+                            <i class="fa-solid fa-door-open"></i>
+                            </a>
+                        </li>
                         @if (User.IsInRole("staff"))
                         {
                         <li class="nav-item text-nowrap">
@@ -51,10 +57,33 @@
         <div class="container">
         </div>
     </footer>
+    <div class="modal" tabindex="-1" id="firstLoadReminder">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">溫馨提醒</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>後台功能可透過登入以下員工帳號進行操作</p>
+                    <p>帳號: staff@example.com</p>
+                    <p>密碼: 1234</p>
+                </div>
+        </div>
+    </div>
+
 
     <script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js" asp-append-version="true"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script>
+    if (!sessionStorage.getItem('firstLoad')) {
+        const modal = new bootstrap.Modal('#firstLoadReminder')
+        modal.show()
+        sessionStorage.setItem('firstLoad', 'true')
+    }
+
+    </script>
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>
